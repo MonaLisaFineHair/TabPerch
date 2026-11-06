@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "TabPerch",
+  "version": "1.6.1",
+  "description": "新标签页按访问次数排列最近网页，将还想再看的卡片随手挂到两侧，下次打开还能找到。数据仅保存在本机。",
+  "minimum_chrome_version": "120",
+  "permissions": ["history", "storage", "favicon"],
+  "optional_host_permissions": ["<all_urls>"],
+  "chrome_url_overrides": { "newtab": "index.html" },
+  "background": { "service_worker": "background.js" },
+  "action": { "default_title": "打开 TabPerch" },
+  "icons": { "16": "icons/icon16.png", "48": "icons/icon48.png", "128": "icons/icon128.png" },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'; connect-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; frame-src https: http:"
+  }
+}
