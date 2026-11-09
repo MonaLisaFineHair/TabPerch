@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "TabPerch",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "新标签页按访问次数排列最近网页，将还想再看的卡片随手挂到两侧，下次打开还能找到。数据仅保存在本机。",
   "minimum_chrome_version": "120",
   "permissions": ["history", "storage", "favicon"],

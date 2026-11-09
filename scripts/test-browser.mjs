@@ -295,7 +295,7 @@ try {
   await expect(newTab.getByText('这里等着你的下一次访问')).toBeVisible();
   await expect(newTab.locator('.hanging-note')).toHaveCount(1);
   const manifest = await worker.evaluate(() => chrome.runtime.getManifest());
-  expect(manifest.version).toBe('1.6.1');
+  expect(manifest.version).toBe('1.6.2');
   expect(manifest.name).toBe('TabPerch');
   await expect(newTab).toHaveTitle('TabPerch · 常去的地方');
   expect(manifest.permissions).toEqual(['history', 'storage', 'favicon']);
