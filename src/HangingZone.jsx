@@ -3,7 +3,6 @@ import { ArrowsLeftRight, Paperclip, X } from '@phosphor-icons/react';
 import { PARK_DRAG_TYPE, noteTilt } from './parking.js';
 import { layoutParkedPages } from './hanging-layout.js';
 import { webUrl } from './history.js';
-import { requestPagePreview } from './PagePreview.jsx';
 
 export function beginCardDrag(event, entry, kind, onDragging) {
   if (event.target.closest('button')) { event.preventDefault(); return; }
@@ -28,7 +27,7 @@ export function readCardDrag(event) {
   try { return JSON.parse(event.dataTransfer.getData(PARK_DRAG_TYPE)); } catch { return null; }
 }
 
-export default function HangingZone({ side, pages, dragging, onDragging, onPark, onRemove, onPreview, PageIcon }) {
+export default function HangingZone({ side, pages, dragging, onDragging, onPark, onRemove, PageIcon }) {
   const [over, setOver] = useState(false);
   const depth = useRef(0);
   const surfaceRef = useRef(null);
@@ -75,7 +74,7 @@ export default function HangingZone({ side, pages, dragging, onDragging, onPark,
           style={{ '--note-left': `${x}px`, '--note-top': `${y}px`, '--note-width': `${width}px`, '--note-height': `${height}px`, '--note-scale': scale, '--note-tilt': `${noteTilt(page.id)}deg` }}
           onDragStart={event => beginCardDrag(event, page, 'parked', onDragging)} onDragEnd={() => onDragging(null)}>
           <span className="note-clip" aria-hidden="true"><Paperclip size={25} weight="bold" /></span>
-          <a href={page.url} target="_blank" rel="noopener noreferrer" draggable={false} className="hanging-link" aria-label={page.title} onClick={event => requestPagePreview(event, page, onPreview)} title={`${page.title}\n${page.url}`}>
+          <a href={page.url} target="_blank" rel="noopener noreferrer" draggable={false} className="hanging-link" aria-label={page.title} title={`${page.title}\n${page.url}`}>
             <PageIcon entry={page} size={Math.min(24, Math.max(10, 24 * scale))} />
             <h2>{page.title}</h2>
             <span>{webUrl(page.url)?.host.replace(/^www\./, '')}</span>

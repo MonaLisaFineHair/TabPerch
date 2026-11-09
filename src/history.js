@@ -3,7 +3,6 @@ export const PERIODS = [
   { value: '3', label: '最近 3 天' },
   { value: '7', label: '最近 7 天' },
   { value: '30', label: '最近 30 天' },
-  { value: '90', label: '最近 90 天' },
   { value: 'all', label: '全部历史' },
 ];
 

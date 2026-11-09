@@ -15,6 +15,7 @@ import PreviewBoundary from './PreviewBoundary.jsx';
 import { PARK_DRAG_TYPE, deleteParkedPage, normalizeParkedPage, readParkedPages, saveParkedPage, subscribeParkedPages } from './parking.js';
 
 const number = value => new Intl.NumberFormat('zh-CN').format(value);
+const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent);
 
 function relativeTime(timestamp) {
   const minutes = Math.max(0, Math.floor((Date.now() - timestamp) / 60000));
@@ -252,8 +253,8 @@ export default function App() {
 
   useEffect(() => {
     const keydown = event => {
-      const typing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(event.target.tagName) || event.target.isContentEditable;
-      if (event.key === '/' && !typing && !dialogRef.current?.open && !previewDialogRef.current?.open) {
+      const searchShortcut = (event.metaKey || event.ctrlKey) && !event.shiftKey && !event.altKey && event.key?.toLowerCase() === 'k';
+      if (searchShortcut && !dialogRef.current?.open && !previewDialogRef.current?.open) {
         event.preventDefault(); searchRef.current?.focus();
       }
       if (event.key === 'Escape' && !dialogRef.current?.open && !previewDialogRef.current?.open) {
@@ -301,7 +302,7 @@ export default function App() {
         <form className="search-box" role="search" onSubmit={event => { event.preventDefault(); if (displayed[0]) setPreviewEntry(displayed[0]); }}>
           <MagnifyingGlass size={22} aria-hidden="true" />
           <input ref={searchRef} type="search" aria-label="搜索访问记录" placeholder="搜索网页标题或网址" value={query} onChange={event => setQuery(event.target.value)} />
-          {query ? <button className="icon-button" type="button" aria-label="清空搜索" onClick={() => { setQuery(''); searchRef.current.focus(); }}><X size={17} /></button> : <kbd>/</kbd>}
+          {query ? <button className="icon-button" type="button" aria-label="清空搜索" onClick={() => { setQuery(''); searchRef.current.focus(); }}><X size={17} /></button> : <kbd>{isMac ? '⌘+K' : 'Ctrl+K'}</kbd>}
         </form>
       </section>
 
@@ -360,8 +361,8 @@ export default function App() {
     </dialog>
 
     </div>
-    <HangingZone side="left" pages={leftParkedPages} dragging={dragging} onDragging={setDragging} onPark={park} onRemove={removePark} onPreview={setPreviewEntry} PageIcon={PageIcon} />
-    <HangingZone side="right" pages={rightParkedPages} dragging={dragging} onDragging={setDragging} onPark={park} onRemove={removePark} onPreview={setPreviewEntry} PageIcon={PageIcon} />
+    <HangingZone side="left" pages={leftParkedPages} dragging={dragging} onDragging={setDragging} onPark={park} onRemove={removePark} PageIcon={PageIcon} />
+    <HangingZone side="right" pages={rightParkedPages} dragging={dragging} onDragging={setDragging} onPark={park} onRemove={removePark} PageIcon={PageIcon} />
     <PreviewBoundary resetKey={previewEntry?.url} onError={() => { setPreviewEntry(null); setToast({ text: '预览暂时无法加载，可使用 Ctrl / Command 点击直接打开网页' }); }}>
       <PagePreview entry={previewEntry} dialogRef={previewDialogRef} onClose={() => setPreviewEntry(null)} PageIcon={PageIcon} />
     </PreviewBoundary>

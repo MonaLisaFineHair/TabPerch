@@ -86,7 +86,7 @@ try {
   await sibling.close();
   const parkedPopup = page.context().waitForEvent('page');
   await githubNote.getByRole('link').click();
-  await page.getByRole('link', { name: '打开网页', exact: true }).click();
+  await expect(page.locator('.page-preview-dialog')).toBeHidden();
   const parkedOpened = await parkedPopup;
   await parkedOpened.waitForLoadState();
   expect(parkedOpened.url()).toBe('https://github.com/');
@@ -94,7 +94,7 @@ try {
   await parkedOpened.close();
   if (await page.getByLabel('关闭提示', { exact: true }).isVisible()) await page.getByLabel('关闭提示', { exact: true }).click();
   await page.screenshot({ path: 'test-results/desktop.png', fullPage: true });
-  console.log('PASS: drag to both sides, reposition, change sides, drag back, undo, keyboard/button alternative, persistence, cross-tab sync, pinned-page opening.');
+  console.log('PASS: drag to both sides, reposition, change sides, drag back, undo, keyboard/button alternative, persistence, cross-tab sync, pinned-page direct opening.');
 
   const clickedTab = page.context().waitForEvent('page');
   await page.locator('.page-link').first().click();
@@ -106,7 +106,7 @@ try {
   await expect(page.locator('.page-card')).toHaveCount(16);
   await opened.close();
 
-  await page.keyboard.press('/');
+  await page.keyboard.press('ControlOrMeta+KeyK');
   await expect(page.getByRole('searchbox')).toBeFocused();
   await page.getByRole('searchbox').fill('react.dev');
   await expect(page.locator('.page-card')).toHaveCount(1);

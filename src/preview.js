@@ -21,7 +21,7 @@ const samples = [
 ];
 export function demoEntries(period) {
   const now = Date.now();
-  const multiplier = period === 'today' ? 0.5 : period === '3' ? 0.2 : period === '7' ? 0.3 : period === '90' ? 2.4 : period === 'all' ? 4.7 : 1;
+  const multiplier = period === 'today' ? 0.5 : period === '3' ? 0.2 : period === '7' ? 0.3 : period === 'all' ? 4.7 : 1;
   return samples.map(([title, url, count, minutes, logo]) => ({
     title, url, count: Math.max(1, Math.round(count * multiplier)),
     lastVisitTime: now - minutes * 60000, logo,
